@@ -21,3 +21,10 @@ mount --bind /proc/self/ns/net /run/netns/server1-u-relay-main
 nsenter --net=/run/netns/server1-wg_pjtl sh -eu -c '
 /__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/netns-tool mode=l3_system routes_local="2602:806:a000:2a82::/64 100.78.20.16/28" address="2602:806:a000:2a82::1 100.78.20.16" netns=server1-wg_pjtl-sbox-1 local_if="to_sbox_1" local_addr=0.0.0.10
 '
+mkdir -p /rw_disk/containers/inner_b_fsroot_rw /rw_disk/containers/inner_c_fsroot_rw /run/socketbox
+chown '67000:67000' /rw_disk/containers/inner_b_fsroot_rw
+ulimit -S -n 1024
+ulimit -H -n 1048576
+setsid -f python3 /containers/mounts/mix_1/_system/python-socketbox/__init__.py /__autoserver-local__/server1/socketbox-incoming.json
+setsid -f python3 /containers/mounts/mix_1/_system/python-socketbox/__init__.py /__autoserver-local__/server1/socketbox-u-relay.json
+screen -d -m -S inner-b /__autoserver-local__/server1/start_inner_b

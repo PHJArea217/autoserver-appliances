@@ -1,0 +1,43 @@
+{
+	"socketbox-version": 1,
+	"daemon": {
+		"chroot": "/proc/sysvipc",
+		"uid": 199,
+		"gid": 199
+	},
+	"incoming": [
+		{
+			"address": "::ffff:127.0.0.100",
+			"port": 2,
+			"netns": "/run/netns/server1-u-relay-sbox-2"
+		}
+	],
+	"outgoing": [
+		{
+			"uid": 150000,
+			"path_nr": 0
+		}
+	],
+	"paths": [
+		{
+			"socket": "/run/socketbox/socketbox-u-relay.sock",
+			"mode": "0777",
+			"uid": 0,
+			"gid": 0
+		}
+	],
+	"rules": {
+		"_start": {
+			"type": "rule",
+			"rules": [
+				{ "l_ip": "::1", "port": 80, "incoming_socket": 0, "jump": "r:another" }
+			]
+		},
+		"another": {
+			"type": "rule",
+			"rules": [
+				{ "jump": "o:0" }
+			]
+		}
+	}
+}
