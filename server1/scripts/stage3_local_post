@@ -1,2 +1,2 @@
 #!/bin/sh
-/etc/__init__
+/etc/__init__ || :

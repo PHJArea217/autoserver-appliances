@@ -10,7 +10,7 @@ for _dir in etc/ssh home root var; do
 done
 [ -d /var/run ] || ln -s /run /var/run
 [ -d /var/lock ] || ln -s /run/lock /var/lock
-mkdir -p /var/log
+mkdir -p /run/netns /var/log
 chown 'root:syslog' /var/log
 chmod 775 /var/log
 for _keytype in rsa ecdsa ed25519; do
@@ -18,3 +18,6 @@ for _keytype in rsa ecdsa ed25519; do
 		ssh-keygen -t "$_keytype" -C "" -N "" -f "/etc/ssh/ssh_host_${_keytype}_key"
 	fi
 done
+/__autoserver-local__/server1/gitrepos/ctrtool-containers/2layer/mount-imgs.sh
+/__autoserver-local__/server1/init_network_base
+/__autoserver-local__/server1/init_network_netns
