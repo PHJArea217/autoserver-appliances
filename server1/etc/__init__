@@ -1,0 +1,20 @@
+#!/bin/sh
+set -eu
+mkdir /rw_disk
+if ! [ "none" = "${autoserver_rwdisk_fstype:=ext4}" ]; then
+	mount -t "${autoserver_rwdisk_fstype}" -o nodev "${autoserver_rwdisk_dev}" /rw_disk
+fi
+for _dir in etc/ssh home root var; do
+	mkdir -p "/rw_disk/$_dir"
+	ln -sT "/rw_disk/$_dir" "/$_dir"
+done
+[ -d /var/run ] || ln -s /run /var/run
+[ -d /var/lock ] || ln -s /run/lock /var/lock
+mkdir -p /var/log
+chown 'root:syslog' /var/log
+chmod 775 /var/log
+for _keytype in rsa ecdsa ed25519; do
+	if [ ! -f "/etc/ssh/ssh_host_${_keytype}_key" ]; then
+		ssh-keygen -t "$_keytype" -C "" -N "" -f "/etc/ssh/ssh_host_${_keytype}_key"
+	fi
+done
