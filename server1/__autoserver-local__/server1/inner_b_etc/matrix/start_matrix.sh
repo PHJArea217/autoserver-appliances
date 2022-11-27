@@ -1,0 +1,2 @@
+#!/bin/sh
+exec nsenter --net=/run/netns/__host__ setpriv --reuid=matrix-synapse --regid=matrix-synapse --init-groups /etc/switch_rootfs.sh /ctr_fs2/matrix-synapse sh -c 'mkdir -p /_fsroot_rw/matrix/sql /_fsroot_rw/matrix/data/media; export SKBOX_STEALTH_MODE=1 SKBOX_DIRECTORY_ROOT2=/run/socketbox LD_PRELOAD=/ctr_fs2/_system/bin/libsocketbox-preload.so; exec python3 -m synapse.app.homeserver -c /_fsroot_rw/matrix/homeserver.yaml'

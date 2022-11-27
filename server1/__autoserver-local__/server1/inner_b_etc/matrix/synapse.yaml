@@ -1,0 +1,79 @@
+# This file came from Synapse, the Matrix homeserver, which is licensed
+# under the Apache 2.0 license.
+pid_file: "/run/socketbox/00002/matrix-synapse.pid"
+web_client_location: https://matrix-b.srv.peterjin.org/
+public_baseurl: https://matrix-b.srv.peterjin.org/
+enable_registration: False
+# XXX change this in production
+registration_shared_secret: 
+signing_key_path: "/_fsroot_rw/matrix/data/signing_key.txt"
+
+listeners:
+- port: 80
+  tls: false
+  # Socketbox
+  bind_addresses: ['fe8f::2:2:0']
+  type: http
+  x_forwarded: true
+  resources:
+  - names: [client, federation]
+    compress: true
+
+ip_range_blacklist:
+  - '127.0.0.0/8'
+  - '10.0.0.0/8'
+  - '172.16.0.0/12'
+  - '192.168.0.0/16'
+  - '100.64.0.0/10'
+  - '169.254.0.0/16'
+  - '192.88.99.0/24'
+  - '198.18.0.0/15'
+  - '192.0.2.0/24'
+  - '198.51.100.0/24'
+  - '203.0.113.0/24'
+  - '224.0.0.0/4'
+  - '2001:19f0:fc00::/38'
+  - '::1/128'
+  - 'fe80::/10'
+  - 'fc00::/7'
+  - '2001:db8::/32'
+  - 'ff00::/8'
+  - 'fec0::/10'
+
+url_preview_enabled: true
+
+url_preview_ip_range_blacklist:
+  - '127.0.0.0/8'
+  - '10.0.0.0/8'
+  - '172.16.0.0/12'
+  - '192.168.0.0/16'
+  - '100.64.0.0/10'
+  - '169.254.0.0/16'
+  - '192.88.99.0/24'
+  - '198.18.0.0/15'
+  - '192.0.2.0/24'
+  - '198.51.100.0/24'
+  - '203.0.113.0/24'
+  - '224.0.0.0/4'
+  - '2001:19f0:fc00::/38'
+  - '::1/128'
+  - 'fe80::/10'
+  - 'fc00::/7'
+  - '2001:db8::/32'
+  - 'ff00::/8'
+  - 'fec0::/10'
+
+server_name: "peterjin.org"
+report_stats: True
+
+database:
+  name: sqlite3
+  args:
+    database: /_fsroot_rw/matrix/sql/homeserver.db
+
+media_store_path: "/_fsroot_rw/matrix/data/media"
+
+trusted_key_servers:
+  - server_name: "peterjin.org"
+  - server_name: "matrix.org"
+
