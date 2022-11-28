@@ -20,4 +20,5 @@ exec /ctr_fs1/_system/bin/ctrtool mini-init2 \
 	-n /bin/sh -c /etc/matrix/start_nginx.sh -r 10 \
 	-n /bin/sh -c-c -c 'umask 077; rm -f /run/synapse.sock;/ctr_fs1/_system/bin/ctrtool ns_open_file -n -d unix -P /run/synapse.sock sh -c '\''chown root:www-data /run/synapse.sock && chmod 660 /run/synapse.sock; exec /ctr_fs1/_system/bin/socketbox -u socketbox -g socketbox -s "$CTRTOOL_NS_OPEN_FILE_FD_0" -S /run/socketbox/00002/00000_00080'\' -r10 \
 	-n /ctr_fs1/_system/bin/socketbox -c-P '0:/socketbox_host/socketbox-incoming.sock' -c-f /etc/socketbox-incoming.conf -c-usocketbox -c-gsocketbox -c-x /run/socketbox -r10 \
+	-n /bin/sh -c -c -c 'exec /ctr_fs1/_system/bin/ctrtool ns_open_file -n -d inet -4 "100.78.20.64,53,a" -N /run/netns/__host__ -l4096 -n -d inet -t dgram -4 "100.78.20.64,53,a" -N /run/netns/__host__ /ctr_fs1/_system/bin/ctrtool set_fds -e /CTRTOOL_NS_OPEN_FILE_FD_0,/CTRTOOL_NS_OPEN_FILE_FD_1 -s /usr/sbin/unbound -d -p' -r10 \
 	-s15 -a2

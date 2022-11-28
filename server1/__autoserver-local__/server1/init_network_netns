@@ -28,3 +28,4 @@ ulimit -H -n 1048576
 setsid -f python3 /containers/mounts/mix_1/_system/python-socketbox/__init__.py /__autoserver-local__/server1/socketbox-incoming.json
 setsid -f python3 /containers/mounts/mix_1/_system/python-socketbox/__init__.py /__autoserver-local__/server1/socketbox-u-relay.json
 screen -d -m -S inner-b /__autoserver-local__/server1/start_inner_b
+/usr/sbin/unbound

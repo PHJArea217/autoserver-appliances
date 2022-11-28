@@ -4,7 +4,7 @@ set -eu
 cd /
 ln -sT /_fsroot_ro/etc/services /etc/services
 ln -sT /_fsroot_ro/etc/protocols /etc/protocols
-mkdir -p /_fsroot_rw/var /run/sshd /run/syslog /run/pdns /var/log /var/lib /var/spool/rsyslog /var/spool/powerdns /run/socketbox
+mkdir -p /_fsroot_rw/var /run/sshd /run/systemd/system /run/syslog /run/pdns /var/log /var/lib /var/spool/rsyslog /var/spool/powerdns /run/socketbox
 mkdir -pm 700 /_fsroot_rw/matrix /_fsroot_rw/mediawiki
 ln -sfT /run /var/run
 /ctr_fs1/_system/bin/ctrtool mount_seq -m /run/socketbox -s /run/socketbox -Ob -F8 -r
@@ -25,5 +25,6 @@ chown root:mediawiki /_fsroot_rw/mediawiki
 chmod 755 /_fsroot_rw/mediawiki
 # chmod 750 /_fsroot_rw/mediawiki
 cd /
+mount --bind /etc/resolv.conf-pjtl /ctr_fs2/matrix-synapse/etc/resolv.conf
 exec /ctr_fs1/_system/bin/ctrtool launcher -L/var/log/container.log -m -p --mount-proc \
 	/etc/__init2__

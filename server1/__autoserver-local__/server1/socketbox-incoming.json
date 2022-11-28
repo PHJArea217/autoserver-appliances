@@ -83,7 +83,7 @@
 	],
 	"outgoing": [
 		{
-			"uid": 150000,
+			"uid": 67000,
 			"path_nr": 0
 		}
 	],
@@ -99,7 +99,8 @@
 		"_start": {
 			"type": "rule",
 			"rules": [
-				{ "l_ip": "::1", "port": 80, "incoming_socket": 0, "jump": "r:another" }
+				{ "l_ip": "fe80::300:8888:8888:8881", "jump": "o:0" },
+				{ "l_ip": "::ffff:172.30.7.241", "jump": "o:0" }
 			]
 		},
 		"another": {
