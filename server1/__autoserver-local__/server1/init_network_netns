@@ -18,6 +18,10 @@ mount --bind /proc/self/ns/net /run/netns/server1-u-relay-main
 /__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/netns-tool mode=l3_system routes_local="fd48:774f:d9a1:8104::/62 172.26.1.0/24" address="fd48:774f:d9a1:8104::1 172.26.1.1" netns=server1-u-relay-sbox-1 local_if="to_sbox_1" local_addr=172.26.0.254
 /__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/netns-tool mode=l3_system routes_local="fd48:774f:d9a1:8108::/62 172.26.2.0/24" address="fd48:774f:d9a1:8108::1 172.26.2.1" netns=server1-u-relay-sbox-2 local_if="to_sbox_2" local_addr=172.26.0.253
 '
+nsenter --net=/run/netns/server1-u-relay-sbox-2 sh -eu -c '
+ip6tables-nft -t mangle -A PREROUTING -p tcp -i eth0 -d "fd48:774f:d9a1:810a::/63" -j TPROXY --on-ip "::ffff:127.0.0.100" --on-port 2
+iptables-nft -t mangle -A PREROUTING -p tcp -i eth0 -d "172.26.2.128/25" -j TPROXY --on-ip "127.0.0.100" --on-port 2
+'
 nsenter --net=/run/netns/server1-wg_pjtl sh -eu -c '
 /__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/netns-tool mode=l3_system routes_local="2602:806:a000:2a82::/64 100.78.20.16/28" address="2602:806:a000:2a82::1 100.78.20.16" netns=server1-wg_pjtl-sbox-1 local_if="to_sbox_1" local_addr=0.0.0.10
 '

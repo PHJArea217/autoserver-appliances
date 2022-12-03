@@ -9,12 +9,13 @@
 		{
 			"address": "::ffff:127.0.0.100",
 			"port": 2,
+			"transparent": true,
 			"netns": "/run/netns/server1-u-relay-sbox-2"
 		}
 	],
 	"outgoing": [
 		{
-			"uid": 150000,
+			"uid": 68100,
 			"path_nr": 0
 		}
 	],
@@ -30,13 +31,8 @@
 		"_start": {
 			"type": "rule",
 			"rules": [
-				{ "l_ip": "::1", "port": 80, "incoming_socket": 0, "jump": "r:another" }
-			]
-		},
-		"another": {
-			"type": "rule",
-			"rules": [
-				{ "jump": "o:0" }
+				{ "l_ip": "fd48:774f:d9a1:810a::", "l_mask": "ffff:ffff:ffff:fffe::", "jump": "o:0" },
+				{ "l_ip": "::ffff:172.26.2.128", "l_mask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ff80", "jump": "o:0" }
 			]
 		}
 	}

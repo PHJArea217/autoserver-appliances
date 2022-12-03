@@ -16,5 +16,7 @@ mysql_install_db -u mysql --force || :
 exec /ctr_fs1/_system/bin/ctrtool mini-init2 \
 	-n /usr/bin/mysqld_safe -c--skip-networking -r 10 \
 	-n /bin/sh -c /etc/matrix/start_nginx_2.sh -c-c/etc/nginx/nginx_2.conf -r 10 \
-	-n /ctr_fs1/_system/bin/socketbox -c-P '0:/socketbox_host/socketbox-incoming.sock' -c-f /etc/socketbox-incoming.conf -c-usocketbox -c-gsocketbox -c-x /run/socketbox -r10 \
+	-n /etc/matrix/start_pdns.sh -r10 \
+	-n /etc/start-u-relay.sh -r9 \
+	-n /ctr_fs1/_system/bin/socketbox -c-P '0:/socketbox_host/socketbox-u-relay.sock' -c-f /etc/socketbox-u-relay.conf -c-usocketbox -c-gsocketbox -c-x /run/socketbox -r10 \
 	-s15 -a2

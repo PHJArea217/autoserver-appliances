@@ -10,6 +10,8 @@ for _dir in etc/ssh home root var; do
 done
 [ -d /var/run ] || ln -s /run /var/run
 [ -d /var/lock ] || ln -s /run/lock /var/lock
+[ -f /etc/protocols ] || ln -s /rofs_root/etc/protocols /etc/protocols
+[ -f /etc/services ] || ln -s /rofs_root/etc/protocols /etc/services
 mkdir -p /run/netns /var/log
 chown 'root:syslog' /var/log
 chmod 775 /var/log

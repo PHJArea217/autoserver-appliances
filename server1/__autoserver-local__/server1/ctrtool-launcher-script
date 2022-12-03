@@ -23,7 +23,7 @@ nsenter --user=user --ipc=ipc --mount=mnt unshare -n sh -eu -c '
 /__autoserver__/ctrtool rootfs-mount -o mount_sysfs=1 -o root_link_opts=usr_ro /proc/driver
 rm -f /proc/driver/etc
 cp -r -- "$2" /proc/driver/etc
-/__autoserver__/ctrtool mount_seq -c /proc/driver -m _fsroot_rw -E -s "$1" -Ob -m ctr_fs1 -E -s /containers/mounts/mix_1 -Ob -m ctr_fs2 -E -s /containers/mounts/mix_2 -Ob -m _fsroot_ro -E -s ctr_fs1/generic -Ob -D run/netns -M 0755 -m run/netns/__host__ -f -s /proc/self/ns/net -K -Ob -m socketbox_host -E -s /run/socketbox -Ob
+/__autoserver__/ctrtool mount_seq -c /proc/driver -m _fsroot_rw -E -s "$1" -Ob -m ctr_fs1 -E -s /containers/mounts/mix_1 -Ob -m ctr_fs2 -E -s /containers/mounts/mix_2 -Ob -m _fsroot_ro -E -s ctr_fs1/generic -Ob -D run/netns -M 0755 -m run/netns/__host__ -f -s /proc/self/ns/net -K -Ob -m socketbox_host -E -s /run/socketbox -Ob -m gitrepos -E -s /__autoserver-local__/server1/gitrepos -Obv
 ' _ "$FSROOT_RW" "$ETC_DIR"
 
 nsenter --net="$NETNS_AMBIENT" sh -eu -c 'ip link add to_srv type veth peer name eth0 netns /proc/self/fd/"$1"/root/proc/driver/run/netns/__host__; ip addr add "$2" dev to_srv; ip link set to_srv address "00:00:5e:00:53:20" up; for r in $3; do ip route add "$r" via inet6 "fe80::200:5eff:fe00:5321" dev to_srv; done' _ "$2" "$LOCAL_ADDR" "$ROUTES"
