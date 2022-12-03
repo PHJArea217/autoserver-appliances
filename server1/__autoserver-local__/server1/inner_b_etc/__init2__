@@ -14,7 +14,7 @@ ip route add 0.0.0.0/0 via inet6 fe80::200:5eff:fe00:5320 dev eth0
 ln -s /_fsroot_ro/etc/_mysql /etc/mysql
 mysql_install_db -u mysql --force || :
 exec /ctr_fs1/_system/bin/ctrtool mini-init2 \
-	-n /usr/bin/mysqld_safe -r 10 \
+	-n /usr/bin/mysqld_safe -c--skip-networking -r 10 \
 	-n /bin/sh -c /etc/matrix/start_matrix.sh \
 	-n /bin/sh -c /etc/matrix/start_mediawiki.sh \
 	-n /bin/sh -c /etc/matrix/start_nginx.sh -r 10 \

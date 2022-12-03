@@ -1,0 +1,3 @@
+#!/bin/sh
+export AUTOSERVER_WHICH_CONTAINER=2
+/__autoserver__/ctrtool launcher --escape -UCimpu --uid-map=0.68100.1010 --gid-map=0.68100.1010 -V --mount-proc --pivot-root=/proc/driver --alloc-tty --script=/__autoserver-local__/server1/ctrtool-launcher-script /ctr_fs1/_system/bin/busybox-s sh -eu -c 'export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games"; /etc/__init__ /etc/__init2-c__ || :; exec /bin/bash -i 2>&1'

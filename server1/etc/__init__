@@ -18,11 +18,12 @@ for _keytype in rsa ecdsa ed25519; do
 		ssh-keygen -t "$_keytype" -C "" -N "" -f "/etc/ssh/ssh_host_${_keytype}_key"
 	fi
 done
-setfacl -m u:67000:r /__autoserver-local__/server1/inner_b_etc/nginx/rsa.key || :
-setfacl -m u:67000:r /__autoserver-local__/server1/inner_b_etc/nginx/ecc.key || :
+setfacl -m u:67000:r -m u:68100:r /__autoserver-local__/server1/inner_b_etc/nginx/rsa.key || :
+setfacl -m u:67000:r -m u:68100:r /__autoserver-local__/server1/inner_b_etc/nginx/ecc.key || :
 rsyslogd
 [ -x /rw_disk/autoserver/init.local ] && /rw_disk/autoserver/init.local
 /__autoserver-local__/server1/gitrepos/ctrtool-containers/2layer/mount-imgs.sh
 /__autoserver-local__/server1/init_network_base
 /__autoserver-local__/server1/init_network_netns
+[ -x /rw_disk/autoserver/init.local-post ] && /rw_disk/autoserver/init.local-post
 /usr/sbin/ntpd -g -u 'ntp:ntp' -c /etc/ntp.conf

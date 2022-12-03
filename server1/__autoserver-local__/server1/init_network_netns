@@ -23,9 +23,11 @@ nsenter --net=/run/netns/server1-wg_pjtl sh -eu -c '
 '
 mkdir -p /rw_disk/containers/inner_b_fsroot_rw /rw_disk/containers/inner_c_fsroot_rw /run/socketbox
 chown '67000:67000' /rw_disk/containers/inner_b_fsroot_rw
+chown '68100:68100' /rw_disk/containers/inner_c_fsroot_rw
 ulimit -S -n 1024
 ulimit -H -n 1048576
 setsid -f python3 /containers/mounts/mix_1/_system/python-socketbox/__init__.py /__autoserver-local__/server1/socketbox-incoming.json
 setsid -f python3 /containers/mounts/mix_1/_system/python-socketbox/__init__.py /__autoserver-local__/server1/socketbox-u-relay.json
 screen -d -m -S inner-b /__autoserver-local__/server1/start_inner_b
+screen -d -m -S inner-c /__autoserver-local__/server1/start_inner_c
 /usr/sbin/unbound
