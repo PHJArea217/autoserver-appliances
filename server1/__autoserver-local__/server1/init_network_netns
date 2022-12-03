@@ -15,8 +15,18 @@ ip -4 route add unreachable default # dev lo
 ip -6 route add unreachable default
 :> /run/netns/server1-u-relay-main
 mount --bind /proc/self/ns/net /run/netns/server1-u-relay-main
+sysctl -w net.ipv6.conf.all.forwarding=1 net.ipv4.ip_forward=1
 /__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/netns-tool mode=l3_system routes_local="fd48:774f:d9a1:8104::/62 172.26.1.0/24" address="fd48:774f:d9a1:8104::1 172.26.1.1" netns=server1-u-relay-sbox-1 local_if="to_sbox_1" local_addr=172.26.0.254
 /__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/netns-tool mode=l3_system routes_local="fd48:774f:d9a1:8108::/62 172.26.2.0/24" address="fd48:774f:d9a1:8108::1 172.26.2.1" netns=server1-u-relay-sbox-2 local_if="to_sbox_2" local_addr=172.26.0.253
+/__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/netns-tool mode=l3_system routes_err="fd48:774f:d9a1:8200::/56 172.26.16.0/20" address="fd48:774f:d9a1:8100::f0 172.26.0.252" netns=server1-u-relay-dist local_if="to_dist" local_addr=172.26.0.251
+'
+nsenter --net=/run/netns/server1-u-relay-dist sh -eu -c '
+sh /__autoserver-local__/server1/gitrepos/ctrtool-config_tars/u-relay-portable/setup/dist2access.sh br_vlan10 "172.26.16.1/24 fd48:774f:d9a1:8201:300::1/64 fe80::1/64"
+sh /__autoserver-local__/server1/gitrepos/ctrtool-config_tars/u-relay-portable/setup/dist2access.sh br_vlan11 "172.26.17.1/24 fd48:774f:d9a1:8202:300::1/64 fe80::1/64"
+sh /__autoserver-local__/server1/gitrepos/ctrtool-config_tars/u-relay-portable/setup/dist2access.sh br_vlan12 "172.26.18.1/24 fd48:774f:d9a1:8203:300::1/64 fe80::1/64"
+sh /__autoserver-local__/server1/gitrepos/ctrtool-config_tars/u-relay-portable/setup/dist2access.sh br_vlan13 "172.26.19.1/24 fd48:774f:d9a1:8204:300::1/64 fe80::1/64"
+sh /__autoserver-local__/server1/gitrepos/ctrtool-config_tars/u-relay-portable/setup/dist2access.sh br_vlan14 "172.26.20.1/24 fd48:774f:d9a1:8205:300::1/64 fe80::1/64"
+dnsmasq -C /__autoserver-local__/server1/dnsmasq-u-relay-dist.conf
 '
 nsenter --net=/run/netns/server1-u-relay-sbox-2 sh -eu -c '
 ip6tables-nft -t mangle -A PREROUTING -p tcp -i eth0 -d "fd48:774f:d9a1:810a::/63" -j TPROXY --on-ip "::ffff:127.0.0.100" --on-port 2
@@ -24,6 +34,7 @@ iptables-nft -t mangle -A PREROUTING -p tcp -i eth0 -d "172.26.2.128/25" -j TPRO
 '
 nsenter --net=/run/netns/server1-wg_pjtl sh -eu -c '
 /__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/netns-tool mode=l3_system routes_local="2602:806:a000:2a82::/64 100.78.20.16/28" address="2602:806:a000:2a82::1 100.78.20.16" netns=server1-wg_pjtl-sbox-1 local_if="to_sbox_1" local_addr=0.0.0.10
+dnsmasq -C /__autoserver-local__/server1/dnsmasq-wg_pjtl.conf
 '
 mkdir -p /rw_disk/containers/inner_b_fsroot_rw /rw_disk/containers/inner_c_fsroot_rw /run/socketbox
 chown '67000:67000' /rw_disk/containers/inner_b_fsroot_rw

@@ -4,3 +4,4 @@ syslog:x:100:
 socketbox:x:101:
 unbound:x:102:
 ntp:x:103:
+dnsmasq-dist:x:104:
