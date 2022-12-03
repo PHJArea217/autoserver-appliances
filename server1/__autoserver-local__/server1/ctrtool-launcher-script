@@ -5,7 +5,7 @@ case "$AUTOSERVER_WHICH_CONTAINER" in
 	1)
 		FSROOT_RW="/rw_disk/containers/inner_b_fsroot_rw"
 		ETC_DIR="/__autoserver-local__/server1/inner_b_etc"
-		ROUTES="100.78.20.64/26 2602:806:a000:2a88::/64"
+		ROUTES="172.30.10.64/26 fd48:774f:d9a0:2118::/64 2001:db8:9b27:2118::/64"
 		LOCAL_ADDR="0.0.0.11"
 		NETNS_AMBIENT="/run/netns/server1-wg_pjtl"
 		;;

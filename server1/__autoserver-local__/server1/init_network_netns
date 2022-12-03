@@ -6,8 +6,8 @@ ip addr add 'fe80::2/64' dev br1a
 sysctl -w net.ipv6.conf.br1a.accept_ra=0
 ip link set br1a address '00:00:5e:00:53:02' up
 # ip link set enp2s0 master br1a up
-/__autoserver-local__/server1/gitrepos/ctrtool-containers/wireguard-netns-bridge/wg-netns-bridge local_if=lan1 wg_if=wg0 netns=server1-wg_pjtl wg_addresses='2602:806:a000:2a80::1 100.78.20.1' lan_addresses='2602:806:a000:2a81:300::1/64 100.78.21.1/24' veth_up bridge=br1a lan_macaddr='00:00:5e:00:53:01' wg_conf=/__autoserver-local__/server1/wg0.conf wg_unreach='2602:806:a000:2a80::/60 100.78.20.0/22'
-/__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/nns2vrf vrf=vrf_wg0 netns=/run/netns/server1-wg_pjtl routes_ipv4='100.78.20.2/31' routes_ipv6='2602:806:a000:2a80::100/120' local_addr='100.78.20.2 2602:806:a000:2a80::101' foreign_addr='100.78.20.0' local_if=veth_wg0 foreign_if=to_main_vrf
+/__autoserver-local__/server1/gitrepos/ctrtool-containers/wireguard-netns-bridge/wg-netns-bridge local_if=lan1 wg_if=wg0 netns=server1-wg_home wg_addresses='fd48:774f:d9a0:2110::1 2001:db8:9b27:2110::1 172.30.10.1' lan_addresses='fd48:774f:d9a0:2111:300::1/64 2001:db8:9b27:2111:300::1/64 172.30.11.1/24' veth_up bridge=br1a lan_macaddr='00:00:5e:00:53:01' wg_conf=/__autoserver-local__/server1/wg0-home.conf wg_unreach='fd48:774f:d9a0:2110::/60 2001:db8:9b27:2110::/60 172.30.10.0/23'
+/__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/nns2vrf vrf=vrf_wg0 netns=/run/netns/server1-wg_home routes_ipv4='172.30.10.2/31' routes_ipv6='fd48:774f:d9a0:2110::100/120 2001:db8:9b27:2110::100/120' local_addr='fd48:774f:d9a0:2110::101 2001:db8:9b27:2110::101' foreign_addr='172.30.10.0' local_if=veth_wg0 foreign_if=to_main_vrf
 unshare -n sh -eu -c 'ip link set lo up
 ip addr add 172.26.0.1 dev lo
 ip addr add "fd48:774f:d9a1:8100::1" dev lo
@@ -32,8 +32,8 @@ nsenter --net=/run/netns/server1-u-relay-sbox-2 sh -eu -c '
 ip6tables-nft -t mangle -A PREROUTING -p tcp -i eth0 -d "fd48:774f:d9a1:810a::/63" -j TPROXY --on-ip "::ffff:127.0.0.100" --on-port 2
 iptables-nft -t mangle -A PREROUTING -p tcp -i eth0 -d "172.26.2.128/25" -j TPROXY --on-ip "127.0.0.100" --on-port 2
 '
-nsenter --net=/run/netns/server1-wg_pjtl sh -eu -c '
-/__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/netns-tool mode=l3_system routes_local="2602:806:a000:2a82::/64 100.78.20.16/28" address="2602:806:a000:2a82::1 100.78.20.16" netns=server1-wg_pjtl-sbox-1 local_if="to_sbox_1" local_addr=0.0.0.10
+nsenter --net=/run/netns/server1-wg_home sh -eu -c '
+/__autoserver-local__/server1/gitrepos/ctrtool-containers/misc/netns-tool mode=l3_system routes_local="fd48:774f:d9a0:2112::/64 2001:db8:9b27:2112::/64 172.30.10.16/28" address="2001:db8:9b27:2112::1 172.30.10.16" netns=server1-wg_pjtl-sbox-1 local_if="to_sbox_1" local_addr=0.0.0.10
 dnsmasq -C /__autoserver-local__/server1/dnsmasq-wg_pjtl.conf
 '
 mkdir -p /rw_disk/containers/inner_b_fsroot_rw /rw_disk/containers/inner_c_fsroot_rw /run/socketbox

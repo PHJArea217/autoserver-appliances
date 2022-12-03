@@ -1,0 +1,15 @@
+#!/bin/sh
+
+ip link set enp1s0 master br0 up
+ip link set enp2s0 master br1a up
+ip link set enp3s0 netns server1-u-relay-dist
+ip link set enp4s0 netns server1-u-relay-dist
+nsenter --net=/run/netns/server1-u-relay-dist sh -eu -c '
+ip link set enp3s0 master br_vlan10 up
+sysctl -w net.ipv6.conf.enp4s0.disable_ipv6=1
+ip link set enp4s0 up
+for i in 11 12 13 14; do
+	ip link add link enp4s0 name vlan"$i" id "$i"
+	ip link set vlan"$i" master br_vlan"$i" up
+done
+'
