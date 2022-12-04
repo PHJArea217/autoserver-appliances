@@ -12,7 +12,7 @@ done
 [ -d /var/lock ] || ln -s /run/lock /var/lock
 [ -f /etc/protocols ] || ln -s /rofs_root/etc/protocols /etc/protocols
 [ -f /etc/services ] || ln -s /rofs_root/etc/protocols /etc/services
-mkdir -p /run/netns /var/log /var/lib/misc
+mkdir -p /run/netns /var/log /var/lib/misc /rw_disk/wwwfiles
 chown 'root:syslog' /var/log
 chmod 775 /var/log
 for _keytype in rsa ecdsa ed25519; do
