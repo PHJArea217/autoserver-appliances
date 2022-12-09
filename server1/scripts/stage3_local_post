@@ -1,2 +1,3 @@
 #!/bin/sh
 /etc/__init__ || :
+export HOME=/root

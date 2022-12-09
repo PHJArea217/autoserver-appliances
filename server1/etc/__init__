@@ -4,15 +4,21 @@ mkdir /rw_disk
 if ! [ "none" = "${autoserver_rwdisk_fstype:=ext4}" ]; then
 	mount -t "${autoserver_rwdisk_fstype}" -o nodev "${autoserver_rwdisk_dev}" /rw_disk
 fi
+mkdir -pm 700 /rw_disk/root
 for _dir in etc/ssh home root var; do
 	mkdir -p "/rw_disk/$_dir"
 	ln -sT "/rw_disk/$_dir" "/$_dir"
 done
+set +e -C
+cat /etc/factory_sshd_config > /etc/ssh/sshd_config
+cat /rofs_root/etc/ssh/ssh_config > /etc/ssh/ssh_config
+set -e +C
+for _dir in etc/pam.d etc/security etc/ssl etc/protocols etc/services; do
+	[ -e "/$_dir" ] || ln -sT "/rofs_root/$_dir" "/$_dir"
+done
 [ -d /var/run ] || ln -s /run /var/run
 [ -d /var/lock ] || ln -s /run/lock /var/lock
-[ -f /etc/protocols ] || ln -s /rofs_root/etc/protocols /etc/protocols
-[ -f /etc/services ] || ln -s /rofs_root/etc/protocols /etc/services
-mkdir -p /run/netns /var/log /var/lib/misc
+mkdir -p /run/netns /var/log /var/lib/misc /rw_disk/wwwfiles
 chown 'root:syslog' /var/log
 chmod 775 /var/log
 for _keytype in rsa ecdsa ed25519; do
@@ -23,8 +29,10 @@ done
 setfacl -m u:67000:r -m u:68100:r /__autoserver-local__/server1/inner_b_etc/nginx/rsa.key || :
 setfacl -m u:67000:r -m u:68100:r /__autoserver-local__/server1/inner_b_etc/nginx/ecc.key || :
 rsyslogd
+sleep 1
 [ -x /rw_disk/autoserver/init.local ] && /rw_disk/autoserver/init.local
 /__autoserver-local__/server1/gitrepos/ctrtool-containers/2layer/mount-imgs.sh
+[ -e /etc/ssh/sshd_not_to_be_run ] || /usr/sbin/sshd
 /__autoserver-local__/server1/init_network_base
 /__autoserver-local__/server1/init_network_netns
 [ -x /rw_disk/autoserver/init.local-post ] && /rw_disk/autoserver/init.local-post
