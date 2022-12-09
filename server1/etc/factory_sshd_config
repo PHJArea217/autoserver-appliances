@@ -1,0 +1,8 @@
+Port 222
+AuthenticationMethods publickey
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM no
+X11Forwarding yes
+AcceptEnv LANG LC_*
+Subsystem sftp /usr/lib/openssh/sftp-server

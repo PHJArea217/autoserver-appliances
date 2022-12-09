@@ -5,3 +5,4 @@ socketbox:x:101:
 unbound:x:102:
 ntp:x:103:
 dnsmasq-dist:x:104:
+sshd:x:105:
