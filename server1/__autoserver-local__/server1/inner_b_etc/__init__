@@ -4,9 +4,11 @@ set -eu
 cd /
 ln -sT /_fsroot_ro/etc/services /etc/services
 ln -sT /_fsroot_ro/etc/protocols /etc/protocols
+ln -sT /_fsroot_ro/etc/ssl /etc/ssl
 # ln -sT /_fsroot_ro/etc/_mysql /etc/mysql
 ln -sT /_fsroot_ro/etc/alternatives /etc/alternatives
-mkdir -p /_fsroot_rw/var /run/sshd /run/systemd/system /run/syslog /run/pdns /var/log /var/lib /var/spool/rsyslog /var/spool/powerdns /run/socketbox
+mkdir -p /_fsroot_rw/var /_fsroot_rw/__usr-local__ /run/sshd /run/systemd/system /run/syslog /run/pdns /var/log /var/lib /var/spool/rsyslog /var/spool/powerdns /run/socketbox
+mount --rbind /_fsroot_rw/__usr-local__ /usr/local
 mkdir -pm 700 /_fsroot_rw/matrix /_fsroot_rw/mediawiki
 ln -sfT /run /var/run
 /ctr_fs1/_system/bin/ctrtool mount_seq -m /run/socketbox -s /run/socketbox -Ob -F8 -r
