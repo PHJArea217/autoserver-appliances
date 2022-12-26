@@ -14,7 +14,8 @@ ip route add ::/0 via inet6 fe80::200:5eff:fe00:5320 dev eth0
 ip route add 0.0.0.0/0 via inet6 fe80::200:5eff:fe00:5320 dev eth0
 '
 ln -s /_fsroot_ro/etc/_mysql /etc/mysql
-	# -n /bin/sh -c /etc/matrix/start_nginx.sh -r 10 \
+mysql_install_db -u mysql --force || :
+[ -x /usr/local/libexec/autoserver/rc.local ] && /usr/local/libexec/autoserver/rc.local
 exec /ctr_fs1/_system/bin/ctrtool mini-init2 \
 	-n /ctr_fs1/_system/bin/socketbox -c-P '0:/socketbox_host/socketbox-incoming.sock' -c-f /etc/socketbox-incoming.conf -c-usocketbox -c-gsocketbox -c-x /run/socketbox -r10 \
 	-n /bin/sh -c -c -c 'exec /ctr_fs1/_system/bin/ctrtool ns_open_file -n -d inet -4 "172.30.10.64,53,a" -N /run/netns/__host__ -l4096 -n -d inet -t dgram -4 "172.30.10.64,53,a" -N /run/netns/__host__ /ctr_fs1/_system/bin/ctrtool set_fds -e /CTRTOOL_NS_OPEN_FILE_FD_0,/CTRTOOL_NS_OPEN_FILE_FD_1 -s /usr/sbin/unbound -d -p' -r10 \
